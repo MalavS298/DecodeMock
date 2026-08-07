@@ -6,12 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Gate;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.ivy.subsystems.Light;
 
 @TeleOp(name = "DecodeMockTeleOp")
 
 public class teleop extends OpMode {
     private Intake intake;
-
+    private Light light;
     private Gate gate;
     private Intake index;
     DcMotor leftFront, rightFront, leftBack, rightBack;
@@ -35,6 +36,9 @@ public class teleop extends OpMode {
 
         /** Gate init **/
         gate = new Gate(hardwareMap);
+
+        /** Light init **/
+        light = new Light(hardwareMap);
 
     }
 
@@ -85,6 +89,10 @@ public class teleop extends OpMode {
          else {
              gate.cl();
          }
+
+         /** ---------------- Color ---------------- **/
+
+
 
 
     }

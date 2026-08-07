@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.ivy.Scheduler;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -11,16 +11,14 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Gate;
-import org.firstinspires.ftc.teamcode.ivy.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.ivy.subsystems.Intake_Transfer;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Light;
 
 @TeleOp(name = "DecodeMockTeleOp")
 
 public class teleop extends OpMode {
     /** Intake Define **/
-    private Intake intake;
-    private Intake index;
-
+    private Intake_Transfer intake;
 
     /** Light Define **/
     private Light light;
@@ -54,8 +52,7 @@ public class teleop extends OpMode {
         leftBack.setDirection(DcMotor.Direction.REVERSE);
 
         /** Intake Init **/
-        intake = new Intake(hardwareMap);
-        index = new Intake(hardwareMap);
+        intake = new Intake_Transfer(hardwareMap);
 
         /** Gate init **/
         gate = new Gate(hardwareMap);
@@ -105,19 +102,19 @@ public class teleop extends OpMode {
 
         /** ---------------- Intake ---------------- **/
         if(gamepad1.left_bumper){
-            intake.in();
+            intake.in().schedule();
         } else if (gamepad1.right_bumper) {
-            intake.idle();
+            intake.idle().schedule();
         } else if (gamepad1.left_bumper && gamepad1.right_bumper) {
-            intake.out();
+            intake.out().schedule();
         }
 
         /** ---------------- Gate & Shooter ---------------- **/
          if (gamepad1.left_trigger > 0.5) {
-            gate.op();
+            gate.op().schedule();
         }
          else {
-             gate.cl();
+             gate.cl().schedule();
          }
         /** ---------------- Color & Light ---------------- **/
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
@@ -126,11 +123,11 @@ public class teleop extends OpMode {
         double hue = JavaUtil.colorToHue(col);
 
         if (hue > 151 && hue < 170) {
-            light.GR();
+            light.GR().schedule();
         } else if (hue > 205 && hue < 225) {
-            light.PU();
+            light.PU().schedule();
         }else{
-            light.OFF();
+            light.OFF().schedule();
         }
 
         /** ---------------- Distance ---------------- **/
@@ -142,8 +139,6 @@ public class teleop extends OpMode {
             telemetry.addLine("Balls Not Loaded!");
         }
 
-
-
-
+        Scheduler.execute();
     }
 }

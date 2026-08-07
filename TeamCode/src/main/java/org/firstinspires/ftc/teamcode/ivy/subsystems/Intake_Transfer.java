@@ -8,14 +8,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Intake {
+public class Intake_Transfer {
 
     public enum State {INTAKE, OUTTAKE, IDLE};
 
     private final DcMotorEx intake;
     private final DcMotorEx index;
     private State state = State.IDLE;
-    public Intake(HardwareMap hardwareMap){
+    public Intake_Transfer(HardwareMap hardwareMap){
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

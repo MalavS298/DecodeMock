@@ -32,7 +32,7 @@ public class Gate {
 
     }
 
-    public Command cl() { return instant(() -> setState(State.CLOSE).requiring(this); }
+    public Command cl(){return instant(() ->setState(State.OPEN)).requiring(this);}
 
     public Command op(){
         return instant(() -> setState(State.OPEN)).requiring(this);

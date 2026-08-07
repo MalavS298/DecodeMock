@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -19,6 +20,9 @@ public class teleop extends OpMode {
     /** Intake Define **/
     private Intake intake;
     private Intake index;
+
+    /** Flywheel Define **/
+    public DcMotorEx flyWheel;
 
     /** Light Define **/
     private Light light;
@@ -46,6 +50,9 @@ public class teleop extends OpMode {
         rightFront = hardwareMap.get(DcMotor.class, "fr");
         leftBack = hardwareMap.get(DcMotor.class, "bl");
         rightBack = hardwareMap.get(DcMotor.class, "br");
+
+        /** FlyWheel Init **/
+        flyWheel = hardwareMap.get(DcMotorEx.class, "shooter");
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.REVERSE);
@@ -138,6 +145,8 @@ public class teleop extends OpMode {
         else {
             telemetry.addLine("Balls Not Loaded!");
         }
+
+        /** ---------------- Shooter ---------------- **/
 
 
 

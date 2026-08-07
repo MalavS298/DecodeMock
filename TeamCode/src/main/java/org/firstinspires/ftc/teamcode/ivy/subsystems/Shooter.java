@@ -4,7 +4,9 @@ import static com.pedropathing.ivy.commands.Commands.instant;
 
 import com.pedropathing.ivy.Command;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -18,6 +20,9 @@ public class Shooter {
     public Shooter(HardwareMap hardwareMap){
         hood_angle = hardwareMap.get(Servo.class, "hood_angle");
         flyWheel = hardwareMap.get(DcMotorEx.class, "flyWheel");
+        flyWheel.setDirection(DcMotorSimple.Direction.FORWARD);
+        flyWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        flyWheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 

@@ -3,9 +3,7 @@ package org.firstinspires.ftc.teamcode.ivy.subsystems;
 import static com.pedropathing.ivy.commands.Commands.instant;
 
 import com.pedropathing.ivy.Command;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -32,9 +30,7 @@ public class Gate {
 
     }
 
-    public Command cl(){return instant(() ->setState(State.OPEN)).requiring(this);}
+    public Command cl(){return instant(() -> setState(State.CLOSE)).requiring(this);}
 
-    public Command op(){
-        return instant(() -> setState(State.OPEN)).requiring(this);
-    }
+    public Command op(){return instant(() -> setState(State.OPEN)).requiring(this);}
 }

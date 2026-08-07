@@ -4,17 +4,22 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.ivy.subsystems.Gate;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Intake;
 
-@TeleOp
+@TeleOp(name = "DecodeMockTeleOp")
+
 public class teleop extends OpMode {
     private Intake intake;
+
+    private Gate gate;
     private Intake index;
     DcMotor leftFront, rightFront, leftBack, rightBack;
     public double SpeedMultiplier = 0.65;
 
     @Override
     public void init() {
+
         /** Mec Init **/
         leftFront=hardwareMap.get(DcMotor.class, "fl");
         rightFront=hardwareMap.get(DcMotor.class,"fr");
@@ -27,6 +32,9 @@ public class teleop extends OpMode {
         /** Intake Init **/
         intake = new Intake(hardwareMap);
         index = new Intake(hardwareMap);
+
+        /** Gate init **/
+        gate = new Gate(hardwareMap);
 
     }
 
@@ -69,6 +77,15 @@ public class teleop extends OpMode {
         } else if (gamepad1.left_bumper && gamepad1.right_bumper) {
             intake.out();
         }
+
+        /** ---------------- Gate and Shooter ---------------- **/
+         if (gamepad1.left_trigger > 0.5) {
+            gate.op();
+        }
+         else {
+             gate.cl();
+         }
+
 
     }
 }

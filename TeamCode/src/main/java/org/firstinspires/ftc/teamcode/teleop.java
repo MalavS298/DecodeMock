@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Gate;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Light;
@@ -17,24 +19,33 @@ public class teleop extends OpMode {
     /** Intake Define **/
     private Intake intake;
     private Intake index;
+
     /** Light Define **/
     private Light light;
+
     /** Gate Define **/
     private Gate gate;
+
     /** Mec Define **/
     DcMotor leftFront, rightFront, leftBack, rightBack;
     public double SpeedMultiplier = 0.65;
+
     /** Color Define **/
     public NormalizedColorSensor colorSensor;
+
+    /** Distance Define **/
+    public DistanceSensor distanceSensor;
+
+
 
     @Override
     public void init() {
 
         /** Mec Init **/
-        leftFront=hardwareMap.get(DcMotor.class, "fl");
-        rightFront=hardwareMap.get(DcMotor.class,"fr");
-        leftBack=hardwareMap.get(DcMotor.class,"bl");
-        rightBack=hardwareMap.get(DcMotor.class,"br");
+        leftFront = hardwareMap.get(DcMotor.class, "fl");
+        rightFront = hardwareMap.get(DcMotor.class, "fr");
+        leftBack = hardwareMap.get(DcMotor.class, "bl");
+        rightBack = hardwareMap.get(DcMotor.class, "br");
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.REVERSE);
@@ -52,6 +63,10 @@ public class teleop extends OpMode {
         /**  Color init**/
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "revColorV3");
         colorSensor.setGain(11);
+
+        /**  Distance init**/
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
+
     }
 
     @Override
@@ -114,6 +129,17 @@ public class teleop extends OpMode {
         }else{
             light.OFF();
         }
+
+        /** ---------------- Distance ---------------- **/
+        double distance = distanceSensor.getDistance(DistanceUnit.INCH);
+        if (distance >= 4) {
+            telemetry.addData("Status: ", "Balls Loaded!");
+        }
+        else {
+            telemetry.addData("Status: ", "Balls Not Loaded!");
+        }
+
+
 
     }
 }

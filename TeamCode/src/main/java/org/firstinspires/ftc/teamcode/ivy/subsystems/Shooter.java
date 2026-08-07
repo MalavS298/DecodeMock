@@ -42,7 +42,7 @@ public class Shooter {
 
     }
 
-    public Command rest(){return instant(() -> setState(State.CLOSE)).requiring(this);}
+    public Command czone(){return instant(() -> setState(State.CLOSE)).requiring(this);}
 
-    public Command angle(){return instant(() -> setState(State.FAR)).requiring(this);}
+    public Command fzone(){return instant(() -> setState(State.FAR)).requiring(this);}
 }

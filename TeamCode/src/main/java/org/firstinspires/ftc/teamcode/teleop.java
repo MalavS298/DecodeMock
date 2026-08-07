@@ -21,8 +21,6 @@ public class teleop extends OpMode {
     private Intake intake;
     private Intake index;
 
-    /** Flywheel Define **/
-    public DcMotorEx flyWheel;
 
     /** Light Define **/
     private Light light;
@@ -51,8 +49,6 @@ public class teleop extends OpMode {
         leftBack = hardwareMap.get(DcMotor.class, "bl");
         rightBack = hardwareMap.get(DcMotor.class, "br");
 
-        /** FlyWheel Init **/
-        flyWheel = hardwareMap.get(DcMotorEx.class, "shooter");
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.REVERSE);
@@ -139,14 +135,13 @@ public class teleop extends OpMode {
 
         /** ---------------- Distance ---------------- **/
         double distance = distanceSensor.getDistance(DistanceUnit.INCH);
-        if (distance >= 4) {
+        if (distance <= 2.5) {
             telemetry.addLine("Balls Loaded!");
         }
         else {
             telemetry.addLine("Balls Not Loaded!");
         }
 
-        /** ---------------- Shooter ---------------- **/
 
 
 

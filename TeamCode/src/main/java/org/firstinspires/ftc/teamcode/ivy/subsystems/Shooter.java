@@ -4,17 +4,20 @@ import static com.pedropathing.ivy.commands.Commands.instant;
 
 import com.pedropathing.ivy.Command;
 
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class HoodAngle {
+public class Shooter {
 
     public enum State {CLOSE, FAR};
     private final Servo hood_angle;
+    private final DcMotorEx flyWheel;
     private State state = State.CLOSE;
 
-    public HoodAngle(HardwareMap hardwareMap){
+    public Shooter(HardwareMap hardwareMap){
         hood_angle = hardwareMap.get(Servo.class, "hood_angle");
+        flyWheel = hardwareMap.get(DcMotorEx.class, "flyWheel");
     }
 
 
@@ -24,9 +27,11 @@ public class HoodAngle {
         switch (newState){
             case CLOSE:
                 hood_angle.setPosition(0.65);
+                flyWheel.setPower(1600);
                 break;
             case FAR:
                 hood_angle.setPosition(0.2);
+                flyWheel.setVelocity(1900);
                 break;
         }
 

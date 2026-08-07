@@ -3,7 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Gate;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Light;
@@ -11,12 +14,18 @@ import org.firstinspires.ftc.teamcode.ivy.subsystems.Light;
 @TeleOp(name = "DecodeMockTeleOp")
 
 public class teleop extends OpMode {
+    /** Intake Define **/
     private Intake intake;
-    private Light light;
-    private Gate gate;
     private Intake index;
+    /** Light Define **/
+    private Light light;
+    /** Gate Define **/
+    private Gate gate;
+    /** Mec Define **/
     DcMotor leftFront, rightFront, leftBack, rightBack;
     public double SpeedMultiplier = 0.65;
+    /** Color Define **/
+    public NormalizedColorSensor colorSensor;
 
     @Override
     public void init() {
@@ -40,6 +49,9 @@ public class teleop extends OpMode {
         /** Light init **/
         light = new Light(hardwareMap);
 
+        /**  Color init**/
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "revColorV3");
+        colorSensor.setGain(11);
     }
 
     @Override
@@ -82,18 +94,26 @@ public class teleop extends OpMode {
             intake.out();
         }
 
-        /** ---------------- Gate and Shooter ---------------- **/
+        /** ---------------- Gate & Shooter ---------------- **/
          if (gamepad1.left_trigger > 0.5) {
             gate.op();
         }
          else {
              gate.cl();
          }
+        /** ---------------- Color & Light ---------------- **/
+        NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
-         /** ---------------- Color ---------------- **/
+        int col = colors.toColor();
+        double hue = JavaUtil.colorToHue(col);
 
-
-
+        if (hue > 151 && hue < 170) {
+            light.GR();
+        } else if (hue > 205 && hue < 225) {
+            light.PU();
+        }else{
+            light.OFF();
+        }
 
     }
 }

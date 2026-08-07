@@ -26,6 +26,7 @@ public class Gate {
                 break;
             case OPEN:
                 gate.setPosition(0.5);
+                break;
         }
 
     }

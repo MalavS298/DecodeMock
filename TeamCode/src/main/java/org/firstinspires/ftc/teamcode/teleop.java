@@ -133,10 +133,10 @@ public class teleop extends OpMode {
         /** ---------------- Distance ---------------- **/
         double distance = distanceSensor.getDistance(DistanceUnit.INCH);
         if (distance >= 4) {
-            telemetry.addData("Status: ", "Balls Loaded!");
+            telemetry.addLine("Balls Loaded!");
         }
         else {
-            telemetry.addData("Status: ", "Balls Not Loaded!");
+            telemetry.addLine("Balls Not Loaded!");
         }
 
 

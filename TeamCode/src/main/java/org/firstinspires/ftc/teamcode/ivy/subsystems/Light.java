@@ -20,8 +20,10 @@ public class Light {
         switch (newstate) {
             case GR:
                 light.setPosition(0.5);
+                break;
             case PU:
                 light.setPosition(0.67);
+                break;
         }
     }
 

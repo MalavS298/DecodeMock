@@ -26,7 +26,6 @@ public class Shooter {
     public static double curTargetVelocity = highVelocity;
 
 
-
     public Shooter(HardwareMap hardwareMap){
         hood_angle = hardwareMap.get(Servo.class, "hood_angle");
         flyWheel = hardwareMap.get(DcMotorEx.class, "flyWheel");

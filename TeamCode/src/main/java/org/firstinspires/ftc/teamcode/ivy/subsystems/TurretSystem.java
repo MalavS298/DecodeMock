@@ -112,6 +112,7 @@ public class TurretSystem {
         lastError = error;
     }
 
+
     public List<AprilTagDetection> getDetectedTags() {
         return detectedTags;
     }

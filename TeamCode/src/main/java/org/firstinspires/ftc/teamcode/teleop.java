@@ -188,7 +188,7 @@ public class teleop extends OpMode {
         telemetry.addLine("----------------------------");
         telemetry.addData("Tuning P", "%.4f (D-Pad U/D)", P);
         telemetry.addData("Tuning F", "%.4f (D-Pad L/R)", F);
-        telemetry.addData("Step Size", "%.4f (B Button)", stepSizes[stepIndex]);
+        telemetry.addData("Step Size", "%. 4f (B Button)", stepSizes[stepIndex]);
 
 
         Scheduler.execute();

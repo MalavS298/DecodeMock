@@ -32,7 +32,7 @@ public class Shooter {
         switch (newState){
             case CLOSE:
                 hood_angle.setPosition(0.65);
-                flyWheel.setPower(1600);
+                flyWheel.setVelocity(1600);
                 break;
             case FAR:
                 hood_angle.setPosition(0.2);

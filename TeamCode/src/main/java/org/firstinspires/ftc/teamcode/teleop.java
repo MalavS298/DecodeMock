@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-
+import static org.firstinspires.ftc.teamcode.ivy.subsystems.Shooter.*;
 import com.pedropathing.ivy.Scheduler;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,18 +7,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Gate;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Intake_Transfer;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Light;
+import org.firstinspires.ftc.teamcode.ivy.subsystems.Shooter;
 
 @TeleOp(name = "DecodeMockTeleOp")
 
 public class teleop extends OpMode {
     /** Intake Define **/
     private Intake_Transfer intake;
+    private Intake_Transfer index;
 
     /** Light Define **/
     private Light light;
@@ -36,7 +37,9 @@ public class teleop extends OpMode {
     /** Distance Define **/
     public DistanceSensor distanceSensor;
 
-
+    /** Shooter Define **/
+    private Shooter flyWheel;
+    private Shooter flyWheel2;
 
     @Override
     public void init() {
@@ -60,12 +63,17 @@ public class teleop extends OpMode {
         /** Light init **/
         light = new Light(hardwareMap);
 
-        /**  Color init**/
+        /**  Color init **/
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "revColorV3");
         colorSensor.setGain(11);
 
-        /**  Distance init**/
+        /**  Distance init **/
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
+
+        /** Shooter init **/
+        flyWheel = new Shooter(hardwareMap);
+
+
 
     }
 
@@ -138,6 +146,50 @@ public class teleop extends OpMode {
         else {
             telemetry.addLine("Balls Not Loaded!");
         }
+        /** ---------------- Shooter PIDF Tuning ---------------- **/
+        if (gamepad1.yWasPressed()) {
+            if(curTargetVelocity== highVelocity) {
+                curTargetVelocity = lowVelocity;
+            } else {
+                curTargetVelocity = highVelocity;
+            }
+        }
+        if (gamepad1.bWasPressed()) {
+            stepIndex = (stepIndex + 1) % stepSizes.length;
+        }
+        if (gamepad1.dpadRightWasPressed()) {
+            F += stepSizes[stepIndex];
+        }
+        if (gamepad1.dpadLeftWasPressed()) {
+            F -= stepSizes[stepIndex];
+        }
+        if (gamepad1.dpadUpWasPressed()) {
+            P += stepSizes[stepIndex];
+        }
+        if(gamepad1.dpadDownWasPressed()) {
+            P -= stepSizes[stepIndex];
+        }
+
+        flyWheel.setPIDF(P, F);
+        flyWheel2.setPIDF(P, F);
+        flyWheel.setVelocity(curTargetVelocity);
+        flyWheel2.setVelocity(curTargetVelocity);
+
+        double curVelocity = flyWheel.getVelocity();
+        double curVelocity2 = flyWheel2.getVelocity2();
+        double error = curTargetVelocity - curVelocity;
+        double error2 = curTargetVelocity - curVelocity2;
+
+        telemetry.addData("Target Velocity", curTargetVelocity);
+        telemetry.addData("Current Velocity", "%.2f", curVelocity);
+        telemetry.addData("Current Velocity", "%.2f", curVelocity2);
+        telemetry.addData("Error", "%.2f", error);
+        telemetry.addData("Error", "%.2f", error2);
+        telemetry.addLine("----------------------------");
+        telemetry.addData("Tuning P", "%.4f (D-Pad U/D)", P);
+        telemetry.addData("Tuning F", "%.4f (D-Pad L/R)", F);
+        telemetry.addData("Step Size", "%.4f (B Button)", stepSizes[stepIndex]);
+
 
         Scheduler.execute();
     }

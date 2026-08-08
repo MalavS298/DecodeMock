@@ -8,23 +8,56 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Shooter {
-
     public enum State {CLOSE, FAR};
-    private final Servo hood_angle;
     private final DcMotorEx flyWheel;
+    private final DcMotorEx flyWheel2;
+    private final Servo hood_angle;
     private State state = State.CLOSE;
+    public static double lowVelocity = 1600;
+    public static double highVelocity = 1900;
+    public static double F = 0;
+    public static double P = 0;
+    public static double[] stepSizes = {10.0, 1.0, 0.1, 0.001, 0.0001};
+    public static int stepIndex = 1;
+    public static double curTargetVelocity = highVelocity;
+
+
 
     public Shooter(HardwareMap hardwareMap){
         hood_angle = hardwareMap.get(Servo.class, "hood_angle");
         flyWheel = hardwareMap.get(DcMotorEx.class, "flyWheel");
-        flyWheel.setDirection(DcMotorSimple.Direction.FORWARD);
-        flyWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        flyWheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        flyWheel2 = hardwareMap.get(DcMotorEx.class, "flyWheel2");
+        flyWheel.setDirection(DcMotorSimple.Direction.REVERSE);
+        flyWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flyWheel.setVelocityPIDFCoefficients(P, 0, 0, F);
+        flyWheel2.setDirection(DcMotorSimple.Direction.REVERSE);
+        flyWheel2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flyWheel2.setVelocityPIDFCoefficients(P, 0, 0, F);
+
+
     }
 
+    public void setPIDF(double p, double f) {
+        flyWheel.setVelocityPIDFCoefficients(p, 0, 0, f);
+        flyWheel2.setVelocityPIDFCoefficients(p, 0, 0, f);
+    }
+
+    public void setVelocity(double curTargetVelocity) {
+        flyWheel.setVelocity(curTargetVelocity);
+        flyWheel2.setVelocity(curTargetVelocity);
+    }
+
+    public double getVelocity() {
+        return flyWheel.getVelocity();
+    }
+
+    public double getVelocity2() {
+        return flyWheel2.getVelocity();
+    }
 
 
     public void setState (State newState){
@@ -32,11 +65,13 @@ public class Shooter {
         switch (newState){
             case CLOSE:
                 hood_angle.setPosition(0.65);
-                flyWheel.setVelocity(1600);
+                flyWheel.setVelocity(lowVelocity);
+                flyWheel2.setVelocity(lowVelocity);
                 break;
             case FAR:
                 hood_angle.setPosition(0.2);
-                flyWheel.setVelocity(1900);
+                flyWheel.setVelocity(highVelocity);
+                flyWheel2.setVelocity(highVelocity);
                 break;
         }
 

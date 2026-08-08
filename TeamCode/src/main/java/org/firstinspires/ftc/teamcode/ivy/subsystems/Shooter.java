@@ -32,11 +32,9 @@ public class Shooter {
         flyWheel = hardwareMap.get(DcMotorEx.class, "flyWheel");
         flyWheel2 = hardwareMap.get(DcMotorEx.class, "flyWheel2");
         flyWheel.setDirection(DcMotorSimple.Direction.REVERSE);
-        flyWheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         flyWheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flyWheel.setVelocityPIDFCoefficients(P, 0, 0, F);
         flyWheel2.setDirection(DcMotorSimple.Direction.REVERSE);
-        flyWheel2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         flyWheel2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flyWheel2.setVelocityPIDFCoefficients(P, 0, 0, F);
 

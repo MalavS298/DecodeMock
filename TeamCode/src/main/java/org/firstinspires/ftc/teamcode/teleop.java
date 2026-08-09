@@ -17,7 +17,6 @@ import org.firstinspires.ftc.teamcode.ivy.subsystems.Light;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.ivy.subsystems.TurretSystem;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-
 @TeleOp(name = "DecodeMockTeleOp")
 
 public class teleop extends OpMode {

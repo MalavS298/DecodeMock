@@ -43,7 +43,6 @@ public class Intake_Transfer {
                 index.setPower(0);
                 break;
         }
-
     }
 
     public Command in(){

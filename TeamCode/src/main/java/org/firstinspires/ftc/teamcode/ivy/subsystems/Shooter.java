@@ -39,7 +39,6 @@ public class Shooter {
         flyWheel2.setVelocityPIDFCoefficients(P, 0, 0, F);
         index = hardwareMap.get(DcMotorEx.class,"index");
         index.setDirection(DcMotorSimple.Direction.FORWARD);
-
     }
 
     public void setPIDF(double p, double f) {

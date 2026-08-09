@@ -173,16 +173,6 @@ public class teleop extends OpMode {
         double error = curTargetVelocity - curVelocity;
         double error2 = curTargetVelocity - curVelocity2;
 
-        telemetry.addData("Target Velocity", curTargetVelocity);
-        telemetry.addData("Current Velocity", "%.2f", curVelocity);
-        telemetry.addData("Current Velocity", "%.2f", curVelocity2);
-        telemetry.addData("Error", "%.2f", error);
-        telemetry.addData("Error", "%.2f", error2);
-        telemetry.addLine("----------------------------");
-        telemetry.addData("Tuning P", "%.4f (D-Pad U/D)", P);
-        telemetry.addData("Tuning F", "%.4f (D-Pad L/R)", F);
-        telemetry.addData("Step Size", "%. 4f (B Button)", stepSizes[stepIndex]);
-
 
 
         Scheduler.execute();

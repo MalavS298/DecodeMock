@@ -16,6 +16,7 @@ public class Shooter {
     private final DcMotorEx flyWheel;
     private final DcMotorEx flyWheel2;
     private final Servo hood_angle;
+    private final DcMotorEx index;
     private State state = State.CLOSE;
     public static double lowVelocity = 1600;
     public static double highVelocity = 1900;
@@ -36,7 +37,8 @@ public class Shooter {
         flyWheel2.setDirection(DcMotorSimple.Direction.REVERSE);
         flyWheel2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flyWheel2.setVelocityPIDFCoefficients(P, 0, 0, F);
-
+        index = hardwareMap.get(DcMotorEx.class,"index");
+        index.setDirection(DcMotorSimple.Direction.FORWARD);
 
     }
 
@@ -45,32 +47,23 @@ public class Shooter {
         flyWheel2.setVelocityPIDFCoefficients(p, 0, 0, f);
     }
 
-    public void setVelocity(double curTargetVelocity) {
-        flyWheel.setVelocity(curTargetVelocity);
-        flyWheel2.setVelocity(curTargetVelocity);
-    }
-
-    public double getVelocity() {
-        return flyWheel.getVelocity();
-    }
-
-    public double getVelocity2() {
-        return flyWheel2.getVelocity();
-    }
-
 
     public void setState (State newState){
         state = newState;
         switch (newState){
             case CLOSE:
                 hood_angle.setPosition(0.65);
+                setPIDF(0.011, 0.008);
                 flyWheel.setVelocity(lowVelocity);
                 flyWheel2.setVelocity(lowVelocity);
+                index.setPower(1.0);
                 break;
             case FAR:
                 hood_angle.setPosition(0.2);
+                setPIDF(0.013, 0.015);;
                 flyWheel.setVelocity(highVelocity);
                 flyWheel2.setVelocity(highVelocity);
+                index.setPower(1.0);
                 break;
         }
 

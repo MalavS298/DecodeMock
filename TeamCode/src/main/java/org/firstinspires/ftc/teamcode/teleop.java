@@ -93,7 +93,15 @@ public class teleop extends OpMode {
     public void loop() {
         /** ---------------- Turret ---------------- **/
         turret.update();
-        AprilTagDetection id20 = turret.getTagBySpecific(20);
+        double tagdistance = turret.distance();
+
+        if (gamepad1.right_trigger > 0.5) {
+            if (tagdistance <= 50) {
+                flyWheel.czone().schedule();
+            } else {
+                flyWheel.fzone().schedule();
+            }
+        }
 
         /** ---------------- Mecanum ---------------- **/
         double drive = -gamepad1.left_stick_y;
@@ -161,29 +169,6 @@ public class teleop extends OpMode {
         else {
             telemetry.addLine("Balls Not Loaded!");
         }
-
-        /** ---------------- Flywheel ---------------- **/
-        flyWheel.setPIDF(P, F);
-        flyWheel2.setPIDF(P, F);
-        flyWheel.setVelocity(curTargetVelocity);
-        flyWheel2.setVelocity(curTargetVelocity);
-
-        double curVelocity = flyWheel.getVelocity();
-        double curVelocity2 = flyWheel2.getVelocity2();
-        double error = curTargetVelocity - curVelocity;
-        double error2 = curTargetVelocity - curVelocity2;
-
-        telemetry.addData("Target Velocity", curTargetVelocity);
-        telemetry.addData("Current Velocity", "%.2f", curVelocity);
-        telemetry.addData("Current Velocity", "%.2f", curVelocity2);
-        telemetry.addData("Error", "%.2f", error);
-        telemetry.addData("Error", "%.2f", error2);
-        telemetry.addLine("----------------------------");
-        telemetry.addData("Tuning P", "%.4f (D-Pad U/D)", P);
-        telemetry.addData("Tuning F", "%.4f (D-Pad L/R)", F);
-        telemetry.addData("Step Size", "%. 4f (B Button)", stepSizes[stepIndex]);
-
-
 
         Scheduler.execute();
     }

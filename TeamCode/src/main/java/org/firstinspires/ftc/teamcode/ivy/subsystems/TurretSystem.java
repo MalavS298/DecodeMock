@@ -117,5 +117,13 @@ public class TurretSystem {
         return detectedTags;
     }
 
+    public double distance() {
+        AprilTagDetection tag = getTagBySpecific(20);
 
+        if (tag == null) {
+            return -1; // Tag not found
+        }
+
+        return tag.ftcPose.range;
+    }
 }

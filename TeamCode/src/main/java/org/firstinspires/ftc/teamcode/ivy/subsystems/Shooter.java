@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Shooter {
-    public enum State {CLOSE, FAR};
+    public enum State {CLOSE, FAR, OFF};
     private final DcMotorEx flyWheel;
     private final DcMotorEx flyWheel2;
     private final Servo hood_angle;
@@ -64,11 +64,16 @@ public class Shooter {
                 flyWheel2.setVelocity(highVelocity);
                 index.setPower(1.0);
                 break;
+            case OFF:
+                flyWheel.setVelocity(0);
+                flyWheel2.setVelocity(0);
+                index.setPower(0);
         }
 
     }
 
     public Command czone(){return instant(() -> setState(State.CLOSE)).requiring(this);}
-
     public Command fzone(){return instant(() -> setState(State.FAR)).requiring(this);}
+    public Command off(){return instant(() -> setState(State.OFF)).requiring(this);}
+
 }

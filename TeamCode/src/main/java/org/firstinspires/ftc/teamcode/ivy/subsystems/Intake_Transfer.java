@@ -48,7 +48,6 @@ public class Intake_Transfer {
     public Command in(){
         return instant(() -> setState(State.INTAKE)).requiring(this);
     }
-
     public Command out(){
         return instant(() -> setState(State.OUTTAKE)).requiring(this);
     }
